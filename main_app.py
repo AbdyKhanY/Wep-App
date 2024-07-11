@@ -4,20 +4,15 @@ Created on Tue Jul  9 09:07:32 2024
 
 @author: MR KHAN
 """
-# -*- coding: utf-8 -*-
-"""
-Created on Tue Jul  9 09:07:32 2024
 
-@author: MR KHAN
-"""
 # Import basic libraries
 import numpy as np
 import pickle
 import streamlit as st
 
 # Loading the saved models
-heart_disease_model = pickle.load(open('heart_disease_model.pkl.pkl', 'rb'))
-parkinsons_model = pickle.load(open('parkinsons_model.pkl.pkl', 'rb'))
+heart_disease_model = pickle.load(open('heart_disease_model.pkl', 'rb'))
+parkinsons_model = pickle.load(open('parkinsons_model.pkl', 'rb'))
 
 # Creating functions for predictions
 def heart_disease_prediction(input_data):
@@ -56,7 +51,7 @@ def main():
     if selection == "Heart Disease Prediction":
         # Heart Disease Prediction Page
         st.title('HEART DISEASE PREDICTION APP')
-        st.image("C:/Users/Windows 10 Pro/Desktop/Machine learning/Heart Disease/heart.jpg")
+        st.image("heart.jpg")
 
         # Getting input data from user
         age = st.text_input('Age of the Person')
@@ -96,7 +91,7 @@ def main():
     elif selection == "Parkinsons Disease Prediction":
         # Parkinsons Disease Prediction Page
         st.title('PARKINSONS PREDICTION APP')
-        st.image("C:/Users/Windows 10 Pro/Desktop/Machine learning/Parkinson Disease/PARKINSONS.jpeg")
+        st.image("PARKINSONS.jpeg")
 
         # Getting input data from user
         MDVP_Fo_Hz = st.text_input('MDVP:Fo(Hz)')
