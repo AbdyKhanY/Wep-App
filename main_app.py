@@ -9,10 +9,18 @@ Created on Tue Jul  9 09:07:32 2024
 import numpy as np
 import pickle
 import streamlit as st
+import os
 
-# Loading the saved models
-heart_disease_model = pickle.load(open('heart_disease_model.pkl', 'rb'))
-parkinsons_model = pickle.load(open('parkinsons_model.pkl', 'rb'))
+# Check if model files exist and load them
+if os.path.exists('heart_disease_model.pkl'):
+    heart_disease_model = pickle.load(open('heart_disease_model.pkl', 'rb'))
+else:
+    st.error("heart_disease_model.pkl not found")
+
+if os.path.exists('parkinsons_model.pkl'):
+    parkinsons_model = pickle.load(open('parkinsons_model.pkl', 'rb'))
+else:
+    st.error("parkinsons_model.pkl not found")
 
 # Creating functions for predictions
 def heart_disease_prediction(input_data):
