@@ -16,8 +16,8 @@ import pickle
 import streamlit as st
 
 # Loading the saved models
-heart_disease_model = pickle.load(open('C:/Users/Windows 10 Pro/Desktop/Machine learning/Heart Disease/heart_disease_model.pkl', 'rb'))
-parkinsons_model = pickle.load(open('C:/Users/Windows 10 Pro/Desktop/Machine learning/Parkinson Disease/parkinsons_model.pkl', 'rb'))
+heart_disease_model = pickle.load(open('https://github.com/AbdyKhanY/Wep-App/blob/dbc84e03b505a729de66fa7a1d3ec8e6a9596f34/heart_disease_model.pkl', 'rb'))
+parkinsons_model = pickle.load(open('https://github.com/AbdyKhanY/Wep-App/blob/dbc84e03b505a729de66fa7a1d3ec8e6a9596f34/parkinsons_model.pkl', 'rb'))
 
 # Creating functions for predictions
 def heart_disease_prediction(input_data):
