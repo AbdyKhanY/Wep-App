@@ -16,8 +16,8 @@ import pickle
 import streamlit as st
 
 # Loading the saved models
-heart_disease_model = pickle.load(open('heart_disease_model.pkl', 'rb'))
-parkinsons_model = pickle.load(open('parkinsons_model.pkl', 'rb'))
+heart_disease_model = pickle.load(open('heart_disease_model.pkl.pkl', 'rb'))
+parkinsons_model = pickle.load(open('parkinsons_model.pkl.pkl', 'rb'))
 
 # Creating functions for predictions
 def heart_disease_prediction(input_data):
