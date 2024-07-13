@@ -14,12 +14,13 @@ import requests
 
 # Function to download files from GitHub
 def download_file(url, filename):
-    response = requests.get(url)
-    if response.status_code == 200:
+    try:
+        response = requests.get(url)
+        response.raise_for_status()
         with open(filename, 'wb') as f:
             f.write(response.content)
-    else:
-        st.error(f"Failed to download {filename} from {url}")
+    except requests.exceptions.RequestException as e:
+        st.error(f"Failed to download {filename} from {url}: {e}")
 
 # URLs of the model files on GitHub
 heart_model_url = 'https://github.com/AbdyKhanY/Wep-App/raw/main/heart_disease_model.pkl'
@@ -33,15 +34,18 @@ if not os.path.exists('parkinsons_model.pkl'):
     download_file(parkinsons_model_url, 'parkinsons_model.pkl')
 
 # Check if model files exist and load them
-if os.path.exists('heart_disease_model.pkl'):
-    heart_disease_model = pickle.load(open('heart_disease_model.pkl', 'rb'))
-else:
-    st.error("heart_disease_model.pkl not found")
+try:
+    if os.path.exists('heart_disease_model.pkl'):
+        heart_disease_model = pickle.load(open('heart_disease_model.pkl', 'rb'))
+    else:
+        st.error("heart_disease_model.pkl not found")
 
-if os.path.exists('parkinsons_model.pkl'):
-    parkinsons_model = pickle.load(open('parkinsons_model.pkl', 'rb'))
-else:
-    st.error("parkinsons_model.pkl not found")
+    if os.path.exists('parkinsons_model.pkl'):
+        parkinsons_model = pickle.load(open('parkinsons_model.pkl', 'rb'))
+    else:
+        st.error("parkinsons_model.pkl not found")
+except Exception as e:
+    st.error(f"Error loading model files: {e}")
 
 # Creating functions for predictions
 def heart_disease_prediction(input_data):
