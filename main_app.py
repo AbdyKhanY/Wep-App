@@ -12,6 +12,13 @@ import streamlit as st
 import os
 import requests
 
+# Check for scikit-learn installation
+try:
+    import sklearn
+    st.write(f"Scikit-learn version: {sklearn.__version__}")
+except ImportError:
+    st.error("Scikit-learn is not installed. Please check your requirements.txt file.")
+
 # Function to download files from GitHub
 def download_file(url, filename):
     try:
