@@ -10,6 +10,27 @@ import numpy as np
 import pickle
 import streamlit as st
 import os
+import requests
+
+# Function to download files from GitHub
+def download_file(url, filename):
+    response = requests.get(url)
+    if response.status_code == 200:
+        with open(filename, 'wb') as f:
+            f.write(response.content)
+    else:
+        st.error(f"Failed to download {filename} from {url}")
+
+# URLs of the model files on GitHub
+heart_model_url = 'https://github.com/AbdyKhanY/Wep-App/raw/main/heart_disease_model.pkl'
+parkinsons_model_url = 'https://github.com/AbdyKhanY/Wep-App/raw/main/parkinsons_model.pkl'
+
+# Download model files if they do not exist
+if not os.path.exists('heart_disease_model.pkl'):
+    download_file(heart_model_url, 'heart_disease_model.pkl')
+
+if not os.path.exists('parkinsons_model.pkl'):
+    download_file(parkinsons_model_url, 'parkinsons_model.pkl')
 
 # Check if model files exist and load them
 if os.path.exists('heart_disease_model.pkl'):
