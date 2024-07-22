@@ -11,13 +11,6 @@ import streamlit as st
 import os
 import requests
 
-# Check for scikit-learn installation
-try:
-    import sklearn
-    st.write(f"Scikit-learn version: {sklearn.__version__}")
-except ImportError:
-    st.error("Scikit-learn is not installed. Please check your requirements.txt file.")
-
 # Function to download files from GitHub
 def download_file(url, filename):
     try:
@@ -37,83 +30,59 @@ if not os.path.exists('parkinsons_model.pkl'):
     st.write("Downloading model file...")
     download_file(parkinsons_model_url, 'parkinsons_model.pkl')
 
-# Check if model files exist and load them
+# Load the model
 try:
-    if os.path.exists('parkinsons_model.pkl'):
-        st.write("Loading model file...")
-        with open('parkinsons_model.pkl', 'rb') as file:
-            parkinsons_model = pickle.load(file)
-        st.write("Model loaded successfully")
-    else:
-        st.error("parkinsons_model.pkl not found")
+    with open('parkinsons_model.pkl', 'rb') as file:
+        parkinsons_model = pickle.load(file)
+    st.write("Model loaded successfully")
 except Exception as e:
-    st.error(f"Error loading model files: {e}")
+    st.error(f"Error loading model file: {e}")
 
-# Creating a function for prediction
+# Function for prediction
 def parkinsons_disease_prediction(input_data):
-    st.write("Predicting...")
-    st.write(f"Input data: {input_data}")
-
-    # Change the input data into numpy array
     try:
         input_data_as_numpy_array = np.asarray(input_data, dtype=float)
-    except ValueError as e:
-        st.error(f"Error converting input data to numpy array: {e}")
-        return None
-
-    st.write(f"Input data as numpy array: {input_data_as_numpy_array}")
-
-    # Reshape the numpy array as we are predicting for only one instance
-    input_data_reshaped = input_data_as_numpy_array.reshape(1, -1)
-    st.write(f"Input data reshaped: {input_data_reshaped}")
-
-    try:
+        input_data_reshaped = input_data_as_numpy_array.reshape(1, -1)
         prediction = parkinsons_model.predict(input_data_reshaped)
-        st.write(f"Prediction: {prediction}")
+        return 'The Person has Parkinson\'s Disease' if prediction[0] == 1 else 'The Person does not have Parkinson\'s Disease'
     except Exception as e:
         st.error(f"Error during model prediction: {e}")
         return None
 
-    if prediction[0] == 0:
-        return 'The Person does not have Parkinson\'s Disease'
-    else:
-        return 'The Person has Parkinson\'s Disease'
-
 def main():
-    # Giving title for our webpage
     st.title('Parkinson\'s Disease Prediction Web App')
 
     # Getting input data from user
-    inputs = {}
-    inputs['MDVP_Fo_Hz'] = st.text_input('MDVP_Fo(Hz)')
-    inputs['MDVP_Fhi_Hz'] = st.text_input('MDVP_Fhi(Hz)')
-    inputs['MDVP_Flo_Hz'] = st.text_input('MDVP_Flo(Hz)')
-    inputs['MDVP_Jitter_percent'] = st.text_input('MDVP_Jitter(%)')
-    inputs['MDVP_Jitter_Abs'] = st.text_input('MDVP_Jitter(Abs)')
-    inputs['MDVP_RAP'] = st.text_input('MDVP_RAP')
-    inputs['MDVP_PPQ'] = st.text_input('MDVP_PPQ')
-    inputs['Jitter_DDP'] = st.text_input('Jitter_DDP')
-    inputs['MDVP_Shimmer'] = st.text_input('MDVP_Shimmer')
-    inputs['MDVP_Shimmer_dB'] = st.text_input('MDVP_Shimmer(dB)')
-    inputs['Shimmer_APQ3'] = st.text_input('Shimmer_APQ3')
-    inputs['Shimmer_APQ5'] = st.text_input('Shimmer_APQ5')
-    inputs['MDVP_APQ'] = st.text_input('MDVP_APQ')
-    inputs['Shimmer_DDA'] = st.text_input('Shimmer_DDA')
-    inputs['NHR'] = st.text_input('NHR')
-    inputs['HNR'] = st.text_input('HNR')
-    inputs['RPDE'] = st.text_input('RPDE')
-    inputs['DFA'] = st.text_input('DFA')
-    inputs['spread1'] = st.text_input('spread1')
-    inputs['spread2'] = st.text_input('spread2')
-    inputs['D2'] = st.text_input('D2')
-    inputs['PPE'] = st.text_input('PPE')
+    input_data = []
+    input_data.append(st.text_input('MDVP_Fo(Hz)'))
+    input_data.append(st.text_input('MDVP_Fhi(Hz)'))
+    input_data.append(st.text_input('MDVP_Flo(Hz)'))
+    input_data.append(st.text_input('MDVP_Jitter(%)'))
+    input_data.append(st.text_input('MDVP_Jitter(Abs)'))
+    input_data.append(st.text_input('MDVP_RAP'))
+    input_data.append(st.text_input('MDVP_PPQ'))
+    input_data.append(st.text_input('Jitter_DDP'))
+    input_data.append(st.text_input('MDVP_Shimmer'))
+    input_data.append(st.text_input('MDVP_Shimmer(dB)'))
+    input_data.append(st.text_input('Shimmer_APQ3'))
+    input_data.append(st.text_input('Shimmer_APQ5'))
+    input_data.append(st.text_input('MDVP_APQ'))
+    input_data.append(st.text_input('Shimmer_DDA'))
+    input_data.append(st.text_input('NHR'))
+    input_data.append(st.text_input('HNR'))
+    input_data.append(st.text_input('RPDE'))
+    input_data.append(st.text_input('DFA'))
+    input_data.append(st.text_input('spread1'))
+    input_data.append(st.text_input('spread2'))
+    input_data.append(st.text_input('D2'))
+    input_data.append(st.text_input('PPE'))
 
-   # Creating a button for prediction
+    # Creating a button for prediction
     if st.button('Parkinsons Disease Test Result'):
-        try:
-            diagnosis = parkinsons_disease_prediction([MDVP_Fo_Hz, MDVP_Fhi_Hz, MDVP_Flo_Hz, MDVP_Jitter_percent, MDVP_Jitter_Abs, MDVP_RAP, MDVP_PPQ, Jitter_DDP, MDVP_Shimmer, MDVP_Shimmer_dB, Shimmer_APQ3, Shimmer_APQ5, MDVP_APQ, Shimmer_DDA, NHR, HNR, RPDE, DFA, spread1, spread2, D2, PPE])
+        diagnosis = parkinsons_disease_prediction(input_data)
+        if diagnosis:
             st.success(diagnosis)
-        except ValueError:
+        else:
             st.error("Please enter valid numeric values.")
 
 if __name__ == '__main__':
