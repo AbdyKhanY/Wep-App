@@ -58,10 +58,13 @@ except Exception as e:
 # Function to save data to a CSV file
 def save_data_to_csv(data, filename='predictions.csv'):
     df = pd.DataFrame(data)
+    st.write(f"Saving data to {filename}:")
+    st.write(df)
     if not os.path.isfile(filename):
         df.to_csv(filename, index=False)
     else:
         df.to_csv(filename, mode='a', header=False, index=False)
+    st.write(f"Data saved to {filename}")
 
 # Creating functions for predictions
 def heart_disease_prediction(input_data):
@@ -188,4 +191,5 @@ def main():
                 st.error("Please enter valid numeric values.")
 
 if __name__ == '__main__':
+
     main()
