@@ -108,16 +108,13 @@ def main():
     inputs['D2'] = st.text_input('D2')
     inputs['PPE'] = st.text_input('PPE')
 
-    # Creating a button for prediction
-    if st.button('Parkinson\'s Disease Test Result'):
-        try:
-            input_data = [inputs[key] for key in inputs]
-            st.write(f"Collected input data: {input_data}")
-            diagnosis = parkinsons_disease_prediction(input_data)
-            if diagnosis:
+   # Creating a button for prediction
+        if st.button('Parkinsons Disease Test Result'):
+            try:
+                diagnosis = parkinsons_disease_prediction([MDVP_Fo_Hz, MDVP_Fhi_Hz, MDVP_Flo_Hz, MDVP_Jitter_percent, MDVP_Jitter_Abs, MDVP_RAP, MDVP_PPQ, Jitter_DDP, MDVP_Shimmer, MDVP_Shimmer_dB, Shimmer_APQ3, Shimmer_APQ5, MDVP_APQ, Shimmer_DDA, NHR, HNR, RPDE, DFA, spread1, spread2, D2, PPE])
                 st.success(diagnosis)
-        except ValueError as e:
-            st.error(f"Please enter valid numeric values: {e}")
+            except ValueError:
+                st.error("Please enter valid numeric values.")
 
 if __name__ == '__main__':
     main()
