@@ -11,6 +11,7 @@ import pickle
 import streamlit as st
 import os
 import requests
+import pandas as pd
 
 # Check for scikit-learn installation
 try:
@@ -53,6 +54,14 @@ try:
         st.error("parkinsons_model.pkl not found")
 except Exception as e:
     st.error(f"Error loading model files: {e}")
+
+# Function to save data to a CSV file
+def save_data_to_csv(data, filename='predictions.csv'):
+    df = pd.DataFrame(data)
+    if not os.path.isfile(filename):
+        df.to_csv(filename, index=False)
+    else:
+        df.to_csv(filename, mode='a', header=False, index=False)
 
 # Creating functions for predictions
 def heart_disease_prediction(input_data):
@@ -123,8 +132,13 @@ def main():
         # Creating a button for prediction
         if st.button('Heart Disease Test Result'):
             try:
-                diagnosis = heart_disease_prediction([age, sex, cp, trestbps, chol, fbs, restecg, thalach, exang, oldpeak, slope, ca, thal])
+                input_data = [age, sex, cp, trestbps, chol, fbs, restecg, thalach, exang, oldpeak, slope, ca, thal]
+                diagnosis = heart_disease_prediction(input_data)
                 st.success(diagnosis)
+
+                # Save data to CSV
+                input_data.append(diagnosis)
+                save_data_to_csv([input_data], filename='heart_disease_predictions.csv')
             except ValueError:
                 st.error("Please enter valid numeric values.")
 
@@ -163,8 +177,13 @@ def main():
         # Creating a button for prediction
         if st.button('Parkinsons Disease Test Result'):
             try:
-                diagnosis = parkinsons_disease_prediction([MDVP_Fo_Hz, MDVP_Fhi_Hz, MDVP_Flo_Hz, MDVP_Jitter_percent, MDVP_Jitter_Abs, MDVP_RAP, MDVP_PPQ, Jitter_DDP, MDVP_Shimmer, MDVP_Shimmer_dB, Shimmer_APQ3, Shimmer_APQ5, MDVP_APQ, Shimmer_DDA, NHR, HNR, RPDE, DFA, spread1, spread2, D2, PPE])
+                input_data = [MDVP_Fo_Hz, MDVP_Fhi_Hz, MDVP_Flo_Hz, MDVP_Jitter_percent, MDVP_Jitter_Abs, MDVP_RAP, MDVP_PPQ, Jitter_DDP, MDVP_Shimmer, MDVP_Shimmer_dB, Shimmer_APQ3, Shimmer_APQ5, MDVP_APQ, Shimmer_DDA, NHR, HNR, RPDE, DFA, spread1, spread2, D2, PPE]
+                diagnosis = parkinsons_disease_prediction(input_data)
                 st.success(diagnosis)
+
+                # Save data to CSV
+                input_data.append(diagnosis)
+                save_data_to_csv([input_data], filename='parkinsons_predictions.csv')
             except ValueError:
                 st.error("Please enter valid numeric values.")
 
