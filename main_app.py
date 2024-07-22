@@ -15,7 +15,7 @@ import requests
 # Check for scikit-learn installation
 try:
     import sklearn
-    st.write(f"Scikit-learn version: {sklearn.__version__}")
+    st.write("Model Made by Khan")
 except ImportError:
     st.error("Scikit-learn is not installed. Please check your requirements.txt file.")
 
